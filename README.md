@@ -1,1 +1,3 @@
-test
+This is a small cli tool to make a initial django setup from a single command
+
+WIP...
