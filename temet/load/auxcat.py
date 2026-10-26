@@ -198,7 +198,7 @@ def auxCat(
             # cache
             sP.data["ac_" + field + epStr] = {}
             for key in r:
-                sP.data["ac_" + field + epStr][key] = r[key]
+                sP.data["ac_" + field + epStr][key] = r[key].copy()  # avoid view
 
             continue
 

@@ -179,7 +179,7 @@ def groupCat(sP, sub=None, halo=None, group=None, fieldsSubhalos=None, fieldsHal
             # cache check
             cacheKey = "gc_subcustom_%s" % field
             if cacheKey in sP.data:
-                r[field] = sP.data[cacheKey]
+                r[field] = sP.data[cacheKey].copy()  # cached, avoid view
                 continue
 
             quantName = quant.lower().replace("_log", "")
@@ -207,7 +207,7 @@ def groupCat(sP, sub=None, halo=None, group=None, fieldsSubhalos=None, fieldsHal
 
             # save cache
             if field in r:
-                sP.data[cacheKey] = r[field]
+                sP.data[cacheKey] = r[field].copy()  # avoid view
 
         if len(r) >= 1:
             # have at least one custom subhalo field, were halos also requested? not allowed
@@ -251,7 +251,7 @@ def groupCat(sP, sub=None, halo=None, group=None, fieldsSubhalos=None, fieldsHal
         for field in fieldsSubhalos:
             cacheKey = "gc_sub_%s" % field
             if cacheKey in sP.data:
-                r["subhalos"][field] = sP.data[cacheKey]
+                r["subhalos"][field] = sP.data[cacheKey].copy()  # cached, avoid view
                 fieldsSubhalos.remove(field)
 
         # load
@@ -274,7 +274,7 @@ def groupCat(sP, sub=None, halo=None, group=None, fieldsSubhalos=None, fieldsHal
 
         # cache
         for field in r["subhalos"]:
-            sP.data["gc_sub_%s" % field] = r["subhalos"][field]
+            sP.data["gc_sub_%s" % field] = r["subhalos"][field].copy()  # avoid view
 
         # reverse AREPO -> AREPO-2 conventions
         for field_old, field_new in field_renames.items():
@@ -294,7 +294,7 @@ def groupCat(sP, sub=None, halo=None, group=None, fieldsSubhalos=None, fieldsHal
         for field in fieldsHalos:
             cacheKey = "gc_halo_%s" % field
             if cacheKey in sP.data:
-                r["halos"][field] = sP.data[cacheKey]
+                r["halos"][field] = sP.data[cacheKey].copy()  # cached, avoid view
                 fieldsHalos.remove(field)
 
         # load
@@ -325,7 +325,7 @@ def groupCat(sP, sub=None, halo=None, group=None, fieldsSubhalos=None, fieldsHal
                 r["halos"] = r["halos"].astype("int32")
 
         for field in r["halos"]:  # cache
-            sP.data["gc_halo_%s" % field] = r["halos"][field]
+            sP.data["gc_halo_%s" % field] = r["halos"][field].copy()  # avoid view
 
         key0 = list(r["halos"].keys())[0]
         if len(r["halos"].keys()) == 1 and key0 != "count":  # keep old behavior of il.groupcat.loadHalos()
